@@ -1,0 +1,146 @@
+[gd_scene load_steps=4 format=3 uid="uid://hm0r7pp6iarx"]
+
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_controller.gd" id="1_controller"]
+[ext_resource type="Theme" path="res://assets/ui/puzzle_theme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://scripts/puzzle/board_manager.gd" id="3_board"]
+
+[node name="PuzzleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_controller")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.043, 0.051, 0.09, 1)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 48
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+
+[node name="HeaderRow" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="MovesBlock" type="VBoxContainer" parent="SafeArea/Layout/Header/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="MovesCaption" type="Label" parent="SafeArea/Layout/Header/HeaderRow/MovesBlock"]
+layout_mode = 2
+theme_type_variation = &"HudCaption"
+text = "MOVES LEFT"
+text_overrun_behavior = 3
+
+[node name="MovesValue" type="Label" parent="SafeArea/Layout/Header/HeaderRow/MovesBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HudValue"
+text = "20"
+text_overrun_behavior = 3
+
+[node name="QueueBlock" type="HBoxContainer" parent="SafeArea/Layout/Header/HeaderRow"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CurrentBlock" type="VBoxContainer" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CurrentCaption" type="Label" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/CurrentBlock"]
+layout_mode = 2
+theme_type_variation = &"HudCaption"
+text = "CURRENT"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="CurrentSlot" type="PanelContainer" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/CurrentBlock"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"PreviewSlot"
+
+[node name="CurrentTilePreview" type="Control" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/CurrentBlock/CurrentSlot"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NextBlock" type="VBoxContainer" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="NextCaption" type="Label" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/NextBlock"]
+layout_mode = 2
+theme_type_variation = &"HudCaption"
+text = "NEXT"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="NextSlot" type="PanelContainer" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/NextBlock"]
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_type_variation = &"PreviewSlot"
+
+[node name="NextTilePreview" type="Control" parent="SafeArea/Layout/Header/HeaderRow/QueueBlock/NextBlock/NextSlot"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BoardAspect" type="AspectRatioContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+ratio = 0.875
+
+[node name="Board" type="Control" parent="SafeArea/Layout/BoardAspect"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_board")
+
+[node name="Footer" type="VBoxContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="StatusLabel" type="Label" parent="SafeArea/Layout/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_type_variation = &"StatusLabel"
+text = "Tap an empty cell to place the tile."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RestartButton" type="Button" parent="SafeArea/Layout/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Restart"

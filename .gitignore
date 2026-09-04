@@ -1,0 +1,37 @@
+# Godot 4 generated / cache files
+.godot/
+.import/
+*.import.bak
+export.cfg
+export_presets.cfg
+override.cfg
+
+# Godot editor & mono leftovers
+.mono/
+data_*/
+mono_crash.*.json
+*.translation
+
+# Build / export output
+build/
+builds/
+export/
+exports/
+*.apk
+*.aab
+*.pck
+*.zip
+
+# Android signing material (never commit keystores)
+*.keystore
+*.jks
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+*.log
