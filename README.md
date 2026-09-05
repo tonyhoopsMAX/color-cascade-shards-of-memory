@@ -73,7 +73,7 @@ intentionally absent.
 ├── assets/
 │   ├── placeholder/icon.svg       Placeholder app icon (code-friendly SVG)
 │   ├── ui/puzzle_theme.tres       Theme: font sizes, button/panel styles, HUD variations
-│   └── tiles/                     Reserved for future tile art
+│   └── tiles/README.md            Reserved for future tile art
 ├── data/
 │   └── levels/                    Reserved for future level definitions
 └── tests/
