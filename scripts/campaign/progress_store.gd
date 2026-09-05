@@ -78,7 +78,10 @@ func _read_valid(path: String) -> bool:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null or file.get_length() > MAX_BYTES:
 		return false
-	var data: Variant = JSON.parse_string(file.get_as_text())
+	var parser := JSON.new()
+	if parser.parse(file.get_as_text()) != OK:
+		return false
+	var data: Variant = parser.data
 	if not data is Dictionary or data.get("version") != 1:
 		return false
 	if not LevelCatalog.whole_number(data.get("unlocked_level"), 1, level_count):

@@ -13,7 +13,10 @@ func load_levels(path: String = PATH) -> bool:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		return false
-	var data: Variant = JSON.parse_string(file.get_as_text())
+	var parser := JSON.new()
+	if parser.parse(file.get_as_text()) != OK:
+		return false
+	var data: Variant = parser.data
 	if not data is Dictionary or data.get("version") != 1:
 		return false
 	var entries: Variant = data.get("levels")
