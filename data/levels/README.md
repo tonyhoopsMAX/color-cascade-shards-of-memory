@@ -1,8 +1,11 @@
 # Level data
 
-Reserved for future chapter/level definitions.
+`chapter_one.json` contains the six introductory campaign levels. IDs must be
+consecutive, starting at 1. Each level supplies a title, hint, positive move
+budget, clear goal and non-negative tile-queue seed. `LevelCatalog` validates
+the entire file before the campaign starts. Retry resets that level's seed.
 
-The current prototype has a single endless-style puzzle attempt with no level
-files. `BoardState.load_from_strings()` already accepts a top-row-first string
-pattern (digits = `GameConfig.TileType`, `.` = empty) so hand-authored starting
-boards can be added here later without changing the puzzle systems.
+All current levels begin with an empty board and use the original five tile
+types. The goal counts total cleared tiles, including cascades. Score does not
+gate completion. The campaign logic tests verify a legal placement solution
+for every level; run them whenever changing a goal, move budget or seed.

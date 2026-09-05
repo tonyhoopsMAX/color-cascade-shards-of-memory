@@ -219,6 +219,11 @@ func _run_resolution(placed_tile: Tile) -> void:
 	_generation += 1
 	var generation := _generation
 	resolution_started.emit()
+	# Always yield once, including when animations are disabled. The controller
+	# must finish charging the move and advancing the queue before completion.
+	await get_tree().process_frame
+	if not _is_current(generation):
+		return
 
 	# Pop-in for the placed tile.
 	if is_instance_valid(placed_tile) and place_duration > 0.0:

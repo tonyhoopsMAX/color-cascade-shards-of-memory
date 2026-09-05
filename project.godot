@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Color Cascade: Shards of Memory"
-config/description="A portrait tile-placement puzzle game. Prototype milestone: core puzzle loop."
-run/main_scene="res://scenes/puzzle/puzzle_scene.tscn"
+config/description="A portrait tile-placement puzzle game with six introductory levels and saved progress."
+run/main_scene="res://scenes/campaign/campaign_scene.tscn"
 config/features=PackedStringArray("4.4", "Mobile")
 run/low_processor_mode=true
 config/icon="res://assets/placeholder/icon.svg"

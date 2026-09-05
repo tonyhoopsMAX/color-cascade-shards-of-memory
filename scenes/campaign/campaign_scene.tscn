@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/puzzle/puzzle_scene.tscn" id="1_puzzle"]
+[ext_resource type="Script" path="res://scripts/campaign/campaign_controller.gd" id="2_campaign"]
+
+[node name="CampaignScene" instance=ExtResource("1_puzzle")]
+script = ExtResource("2_campaign")

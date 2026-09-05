@@ -4,16 +4,20 @@ A portrait, Android-first tile-placement puzzle game built with **Godot 4.x**
 and **GDScript**. No paid dependencies, no networking, no backend, no ads, no
 analytics, no plugins.
 
-This repository currently contains the **first milestone only**: the Godot
-project foundation and a playable core puzzle prototype. Story, hub, chapters,
-journal, boosters, save/load, audio and final art are later milestones and are
-intentionally absent.
+This branch adds **milestone 2: an introductory six-level campaign** to the
+existing playable core. It includes clear goals, scoring, win/retry/next-level
+flow, an unlocked-level picker and local progress saves. Story scenes, the
+exploration hub, journal, boosters, audio and final pixel art remain future work.
+
+The original prototype is preserved at `scenes/puzzle/puzzle_scene.tscn`; the
+new main scene wraps it with campaign functionality. The existing placement
+rules have not changed: this is **tile placement, not tile swapping**.
 
 ## Requirements
 
 | Item | Requirement |
 | --- | --- |
-| Engine | Godot **4.4 or newer** (standard build, no C#/Mono needed). Validated with Godot 4.7.2. |
+| Engine | Godot **4.4 or newer** (standard build, no C#/Mono needed). CI targets 4.4.1. See the GitHub Actions run for actual validation status. |
 | Development OS | Windows, Linux or macOS (the project is desktop-runnable for testing). |
 | Target | Android, portrait orientation. |
 
@@ -25,10 +29,10 @@ intentionally absent.
 3. Open the project. The first import generates the ignored `.godot/` cache
    folder; this is expected.
 
-## Running the prototype
+## Running the game
 
 * Press **F5** (Run Project) — the main scene is
-  `res://scenes/puzzle/puzzle_scene.tscn`.
+  `res://scenes/campaign/campaign_scene.tscn`.
 * The desktop window opens at 540 × 960 (a half-scale portrait phone). Resize it
   freely; the layout is container-based and re-flows.
 * Mouse clicks are converted to touch input, so playing with a mouse on
@@ -36,7 +40,8 @@ intentionally absent.
 
 ### How to play
 
-1. The HUD shows **MOVES LEFT**, the **CURRENT** tile and the **NEXT** tile.
+1. The HUD shows your level, clear goal, score, **MOVES LEFT**, **CURRENT** tile
+   and **NEXT** tile.
 2. Tap any **empty** cell to place the current tile there. That costs one move
    and advances the queue.
 3. Any group of **3 or more same-colour tiles connected up/down/left/right**
@@ -44,8 +49,46 @@ intentionally absent.
 4. Remaining tiles fall straight down. If the fall creates new groups they
    clear automatically (a *cascade*) until the board is stable. Input is locked
    while this resolves.
-5. You start with **20 moves**. When they run out (or the board fills up) the
-   attempt ends. **Restart** fully resets the board, queue, moves and state.
+5. Meet the clear goal before running out of moves. A goal reached on the last
+   move **wins**. Level one has 20 moves; later levels use their own budgets.
+6. **Retry** resets the attempt with the same tile sequence. **Next** unlocks
+   after a win. **Levels** lets you replay unlocked levels; choosing one starts
+   a fresh attempt. Back to puzzle closes the menu without resetting it.
+
+### Campaign, score and saves
+
+| Level | Title | Moves | Clear goal |
+| --- | --- | ---: | ---: |
+| 1 | First Light | 20 | 6 |
+| 2 | Small Sparks | 22 | 9 |
+| 3 | Forest Echo | 25 | 12 |
+| 4 | Falling Colors | 28 | 15 |
+| 5 | Chain Reaction | 30 | 18 |
+| 6 | A Brighter Tomorrow | 36 | 24 |
+
+Scoring: **10 points per cleared tile + 50 points for each extra clear wave
+in the same placement**. A two-wave, seven-tile cascade is worth 120 points.
+Scores are for replay improvement; level completion depends on the clear goal.
+The campaign tests construct a legal solution for each seeded level.
+
+Unlocked levels, selected level and best scores are saved locally in
+`user://campaign_progress.json`, with a previous-save `.bak` recovery file.
+Retries never lower a best score or remove an unlock. Invalid save data is
+rejected; the game tries the backup and otherwise starts at level one with a
+warning. Write failures show a visible warning while play remains available.
+There is no cloud sync, and **an unfinished board is not resumed after closing
+the app**. Uninstalling or clearing application data may remove saved progress.
+
+### New campaign files
+
+* `data/levels/chapter_one.json`: validated, seedable level definitions.
+* `scripts/campaign/level_catalog.gd`: content loading and validation.
+* `scripts/campaign/puzzle_attempt.gd`: pure scoring and goal tracking.
+* `scripts/campaign/progress_store.gd`: versioned progress and backup recovery.
+* `scripts/campaign/campaign_controller.gd`: campaign HUD, menu and level flow.
+* `scenes/campaign/campaign_scene.tscn`: campaign wrapper of the original scene.
+* `tests/test_campaign_logic.gd` and `tests/test_campaign_scene.gd`: new tests.
+* `.github/workflows/godot-tests.yml`: import checks and all four test suites.
 
 ## Project structure
 
@@ -99,7 +142,7 @@ intentionally absent.
   pixel-positioned; the board takes whatever space remains between the HUD and
   the footer and keeps its aspect ratio at any phone resolution.
 
-## Implemented features (this milestone)
+## Original core features (preserved)
 
 * Valid Godot 4 project, portrait 1080 × 1920 reference resolution, `canvas_items`
   stretch with `expand` aspect so different Android aspect ratios add space
@@ -130,6 +173,12 @@ godot --headless --path . --script res://tests/test_puzzle_logic.gd
 
 # Real scene: tap input, move counter, queue, input lock, clear/gravity/cascade, restart, layout fit
 godot --headless --path . --script res://tests/test_puzzle_scene.gd
+
+# Level definitions, scoring, legal solutions and save/backup validation
+godot --headless --path . --script res://tests/test_campaign_logic.gd
+
+# Campaign UI, last-move wins, retry/next, unlocks and phone-size layout
+godot --headless --path . --script res://tests/test_campaign_scene.gd
 ```
 
 Each run prints `PASS`/`FAIL` lines and exits with code 0 on success.
@@ -137,13 +186,18 @@ If the scripts cannot find the class names on a fresh clone, open the project
 once in the editor (or run `godot --headless --path . --import`) so Godot
 generates its script class cache first.
 
+CI imports the project first, rejects script errors, runs all four suites with
+timeouts and preserves logs. The new tests use isolated save filenames, not
+the player's save. A GitHub source ZIP is a **Godot project, not an Android APK**.
+
 ## Current limitations
 
-* Prototype loop only: no goals, scoring, levels, story, hub, journal, memory
-  system, boosters, save/load, audio, ads or monetisation yet.
+* Six introductory puzzle levels only; no playable story, exploration hub,
+  journal, memory system, boosters, audio, ads or monetisation yet.
 * Visuals are code-drawn placeholders (flat colours + letters); final pixel art
   comes later. The app icon is a placeholder SVG.
-* Tile sequence is uniformly random (no bag or difficulty shaping).
+* Tile sequence is uniformly random with a fixed per-level seed (no bag or
+  difficulty shaping). Difficulty and final artwork still need playtesting.
 * A freshly placed tile stays where it is tapped (it does not drop) unless a
   clear triggers gravity; this is configurable via `gravity_after_placement`
   on the Board node.
