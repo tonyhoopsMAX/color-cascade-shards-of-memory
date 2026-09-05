@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "levels": [
+    {"id": 1, "title": "First Light", "moves": 20, "clear_goal": 6, "seed": 104,
+     "hint": "Place matching colors beside each other. Three connected tiles clear."},
+    {"id": 2, "title": "Small Sparks", "moves": 22, "clear_goal": 9, "seed": 209,
+     "hint": "Check NEXT before placing CURRENT. Leave room for the next color."},
+    {"id": 3, "title": "Forest Echo", "moves": 25, "clear_goal": 12, "seed": 312,
+     "hint": "Matches connect up, down, left and right. Diagonals do not count."},
+    {"id": 4, "title": "Falling Colors", "moves": 28, "clear_goal": 15, "seed": 415,
+     "hint": "After a match, tiles fall. Plan where the survivors will land."},
+    {"id": 5, "title": "Chain Reaction", "moves": 30, "clear_goal": 18, "seed": 518,
+     "hint": "A second clear in one turn earns a cascade bonus."},
+    {"id": 6, "title": "A Brighter Tomorrow", "moves": 36, "clear_goal": 24, "seed": 624,
+     "hint": "Restore the last colors of this opening chapter. Every placement matters."}
+  ]
+}

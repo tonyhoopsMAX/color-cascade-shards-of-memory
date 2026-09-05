@@ -1,0 +1,47 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Color Cascade: Shards of Memory"
+config/description="A portrait tile-placement puzzle game with six introductory levels and saved progress."
+run/main_scene="res://scenes/campaign/campaign_scene.tscn"
+config/features=PackedStringArray("4.4", "Mobile")
+run/low_processor_mode=true
+config/icon="res://assets/placeholder/icon.svg"
+
+[autoload]
+
+GameConfig="*res://autoload/game_config.gd"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/window_width_override=540
+window/size/window_height_override=960
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[gui]
+
+common/snap_controls_to_pixels=false
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=true
+
+[rendering]
+
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true
